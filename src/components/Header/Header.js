@@ -1,4 +1,7 @@
-import React, {useState, useContext} from "react";
+import React, { useRef } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { setLocationName } from '../../store/searchSlice';
+import { setLocationSearch } from '../../store/searchSlice'
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 // importing Context (location context)
@@ -49,9 +52,13 @@ const HeaderWrapper = styled.header`
 
 const Header = () => {
 
+  // it is from search componenet
+  const dispatch = useDispatch();
+  const searchRef = useRef();
+  const locationName = useSelector((state) => state.search.locationName);
   // consuming or using location context 
-  const { setLocationSearch } = useContext(LocationContext)
-  const [locationName, setLocationName] = useState('')
+  // const { setLocationSearch } = useContext(LocationContext)
+  // const [locationName, setLocationName] = useState('')
   
   const handleSelect =(address) => {
     setValue(address, false);
