@@ -1,12 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-  loading: true,
-  error: false,
-  location: 'Denver, CO',
-  coords: [],
-  results: [],
-  active: null,
+  // loading: true,
+  // error: false,
+  // location: 'Denver, CO',
+  // coords: [],
+  // results: [],
+  // active: null,
+  markers:[],
+  selected:null,
+  center:'',
+  directions:'',
+  restaurants:[],
+  locationSearch:''
+
 };
 
 export const getResults = createAsyncThunk(
@@ -29,8 +36,11 @@ export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    setLocation(state, { payload }) {
-      state.location = payload;
+    setLocationName(state, { payload }) {
+      state.locationName = payload;
+    },
+    setLocationSearch(state, { payload }) {
+      state.locationSearch = payload;
     },
     setActive(state, { payload }) {
       state.active = payload;
@@ -40,16 +50,16 @@ export const searchSlice = createSlice({
     builder
       .addCase(getResults.pending, (state) => {
         state.loading = true;
-        state.results = [];
+        state.restaurants = [];
         state.coords = [];
       })
       .addCase(
         getResults.fulfilled,
-        (state, { payload: { lat, lon, businesses } }) => {
+        (state, { payload: { lat, lon, restaurants } }) => {
           state.loading = false;
           state.error = false;
           state.coords = [lat, lon];
-          state.results = businesses;
+          state.restaurants = restaurants;
         },
       )
       .addCase(getResults.rejected, (state) => {
@@ -59,6 +69,6 @@ export const searchSlice = createSlice({
   },
 });
 
-export const { setLocation, setActive } = searchSlice.actions;
+export const { setLocationName, setActive, setLocationSearch } = searchSlice.actions;
 
 export default searchSlice.reducer;
